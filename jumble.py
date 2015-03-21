@@ -9,15 +9,36 @@ def printInput():
 	return userInput
 
 def validateInput(inputStr):
-	if len(inputStr.split()) != 1 or not re.match(r'^[a-zA-Z]+$', inputStr):
+	if len(inputStr.split()) != 1 or not re.match(r'^[a-zA-Z\']+$', inputStr):
 		return False
 	else:
 		return True
 
-
 #Driver
 
-while not validateInput(printInput()):
-	print 'Improper input, try again...'
+#reading dictionary into trie
 
-print 'Valid Input: ' + userInput
+def createTrie():
+	root = dict()
+	with open('aspell-en-dict.txt') as readFile:
+	    for line in readFile:
+	    	word_dict = root
+	    	line = line.strip()
+	    	for character in line:
+	    		word_dict = word_dict.setdefault(character, {})
+	    	word_dict = word_dict.setdefault('null', 'null')
+	return root
+
+print createTrie()
+
+
+
+    		
+    	
+
+#while not validateInput(printInput()):
+#	print 'Improper input, try again...'
+
+#print 'Valid Input: ' + userInput
+
+

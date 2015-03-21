@@ -13,7 +13,7 @@ def validateInput(inputStr):
 
 #Driver
 
-while not validateInput(printInput()):
+while not validateInput(userInput = printInput()):
 	print 'Improper input, try again...'
 
 

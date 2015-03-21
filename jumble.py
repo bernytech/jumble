@@ -2,22 +2,7 @@ import sys, re
 
 global userInput
 
-def printInput():
-	global userInput
-	print 'Enter a string: '
- 	userInput = raw_input()
-	return userInput
-
-def validateInput(inputStr):
-	if len(inputStr.split()) != 1 or not re.match(r'^[a-zA-Z\']+$', inputStr):
-		return False
-	else:
-		return True
-
-#Driver
-
 #reading dictionary into trie
-
 def createTrie():
 	root = dict()
 	with open('aspell-en-dict.txt') as readFile:
@@ -29,16 +14,43 @@ def createTrie():
 	    	word_dict = word_dict.setdefault('null', 'null')
 	return root
 
-print createTrie()
+def printInput():
+	global userInput
+	print 'Enter a word that contains only alphabetical characters and hyphen (e.g. don\'t): '
+ 	userInput = raw_input()
+	return userInput
+
+def validateInput(inputStr):
+	if len(inputStr.split()) != 1 or not re.match(r'^[a-zA-Z\']+$', inputStr):
+		return False
+	else:
+		return True
+
+def isValidWord(trie, userInput):
+	word_dict = trie
+	for character in userInput:
+		if character in word_dict:
+			word_dict = word_dict[character]
+		else:
+			return False
+	else:
+		if 'null' in word_dict:
+			return True
+		else:
+			return False
 
 
+#Driver
 
-    		
-    	
+trie = createTrie()
 
-#while not validateInput(printInput()):
-#	print 'Improper input, try again...'
+while not validateInput(printInput()):
+	print 'Improper input, try again...'
 
-#print 'Valid Input: ' + userInput
+if isValidWord(trie, userInput):
+	print 'This is indeed a valid dictionary word: ' + userInput
+else:
+	print 'Word not found in the dictionary: ' + userInput
+
 
 

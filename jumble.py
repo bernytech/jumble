@@ -16,7 +16,7 @@ def createTrie():
 
 def printInput():
 	global userInput
-	print 'Enter a word that contains only alphabetical characters and hyphen (e.g. don\'t): '
+	print 'Enter a word that contains only alphabetical characters and/or apostrophe: '
  	userInput = raw_input()
 	return userInput
 
@@ -39,6 +39,18 @@ def isValidWord(trie, userInput):
 		else:
 			return False
 
+def all_perms(pList):
+    if len(pList) == 0:
+    	yield []
+    elif len(pList) == 1:
+    	yield pList
+    else:
+    	iList = []
+    	for i in range(len(pList)):
+    		element = pList[i]
+    		rElements = pList[:i] + pList[i+1:]
+    		for p in all_perms(rElements):
+    			yield [element] + p
 
 #Driver
 
@@ -47,10 +59,10 @@ trie = createTrie()
 while not validateInput(printInput()):
 	print 'Improper input, try again...'
 
-if isValidWord(trie, userInput):
-	print 'This is indeed a valid dictionary word: ' + userInput
-else:
-	print 'Word not found in the dictionary: ' + userInput
-
-
+validWords = set()
+for p in all_perms(list(userInput)):
+	word = "".join(p)
+	if isValidWord(trie, word):
+		validWords.add(word)
+print validWords
 
